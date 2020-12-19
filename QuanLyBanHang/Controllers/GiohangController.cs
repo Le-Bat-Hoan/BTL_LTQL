@@ -18,7 +18,7 @@ namespace QuanLyBanHang.Controllers
             List<CartItem> giohang = Session["giohang"] as List<CartItem>;
             return View(giohang);
         }
-        //khai báo phương thức thêm sản phẩm vào giỏ hàng
+       
         public RedirectToRouteResult AddToCart(string MaSP)
         {
             if (Session["giohang"] == null)
@@ -26,8 +26,8 @@ namespace QuanLyBanHang.Controllers
                 Session["giohang"] = new List<CartItem>();
             }
             List<CartItem> giohang = Session["giohang"] as List<CartItem>;
-            //kiểm tra phần khách đang chọn có trong giỏ hàng chưa
-            if (giohang.FirstOrDefault(m => m.MaSP == MaSP) == null)//chưa có trong giỏ hàng
+            
+            if (giohang.FirstOrDefault(m => m.MaSP == MaSP) == null)
             {
                 SanPham sp = db.SanPhams.Find(MaSP);
                 CartItem newItem = new CartItem();
@@ -37,7 +37,7 @@ namespace QuanLyBanHang.Controllers
                 newItem.DonGia = Convert.ToDouble(sp.Dongia);
                 giohang.Add(newItem);
             }
-            else//sản phẩm đã có trong giỏ hàng ==> tăng số lượng lên 1
+            else
             {
                 CartItem cartIteam = giohang.FirstOrDefault(m => m.MaSP == MaSP);
                 cartIteam.SoLuong++;
@@ -47,7 +47,7 @@ namespace QuanLyBanHang.Controllers
         }
         public RedirectToRouteResult Update(string MaSP, int txtSoluong)
         {
-            //Tìm CartItem muốn xóa
+            
             List<CartItem> giohang = Session["giohang"] as List<CartItem>;
             CartItem item = giohang.FirstOrDefault(m => m.MaSP == MaSP);
             if (item != null)
@@ -59,7 +59,7 @@ namespace QuanLyBanHang.Controllers
         }
         public RedirectToRouteResult DelCartItem(string MaSP)
         {
-            //Tìm CartItem muốn xóa
+            
             List<CartItem> giohang = Session["giohang"] as List<CartItem>;
             CartItem item = giohang.FirstOrDefault(m => m.MaSP == MaSP);
             if (item != null)
@@ -98,7 +98,7 @@ namespace QuanLyBanHang.Controllers
             mail.IsBodyHtml = true;
             client.Send(mail);
             return RedirectToAction("Index", "Home");
-            //gửi mail cho khách hàng
+            
         }
     }
 }

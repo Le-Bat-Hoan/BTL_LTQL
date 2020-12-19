@@ -48,7 +48,7 @@ namespace QuanLyBanHang.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(string Email,string password)
         {
-            if (ModelState.IsValid)//kiểm tra người dùng nhập vào có hợp lệ hay không
+            if (ModelState.IsValid)
             {
                 var mat_khau_ma_hoa = GETMD5(password);
                 var kiem_tra_tai_khoan = db.KhachHangs.Where(s => s.Email.Equals(Email) && s.password.Equals(mat_khau_ma_hoa)).ToList();
@@ -77,7 +77,7 @@ namespace QuanLyBanHang.Controllers
         }
         public ActionResult Logout()
         {
-            Session.Clear();//remove session
+            Session.Clear();
             return RedirectToAction("Login");
 
         }
@@ -91,14 +91,14 @@ namespace QuanLyBanHang.Controllers
         {
             if (ModelState.IsValid)
             {
-                var checkEmail = db.KhachHangs.FirstOrDefault(m => m.Email == kh.Email);//kiểm tra trong database đã có email chưa
+                var checkEmail = db.KhachHangs.FirstOrDefault(m => m.Email == kh.Email);
                 if(checkEmail == null)
                 {
                     kh.password = GETMD5(kh.password);
-                    db.Configuration.ValidateOnSaveEnabled = false;//check điều kiện
+                    db.Configuration.ValidateOnSaveEnabled = false;
                     db.KhachHangs.Add(kh);
                     db.SaveChanges();
-                    return RedirectToAction("Login");//trả về trang Login
+                    return RedirectToAction("Login");
                 }
                 else
                 {
@@ -108,10 +108,10 @@ namespace QuanLyBanHang.Controllers
             }
             return View();
         }
-        public static string GETMD5(string pass) // coppy phần mã hóa mật khẩu
+        public static string GETMD5(string pass) 
         {
-            MD5 md5 = new MD5CryptoServiceProvider();// nhấn Ctrl . để sửa lỗi
-            byte[] fromData = Encoding.UTF8.GetBytes(pass);// nhấn Ctrl . để sửa lỗi
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] fromData = Encoding.UTF8.GetBytes(pass);
             byte[] targetData = md5.ComputeHash(fromData);
             string mat_khau_ma_hoa = null;
 
